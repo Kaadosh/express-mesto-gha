@@ -17,19 +17,8 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
     console.error('Ошибка подключения к базе данных:', err);
   });
 
-const usersRouter = require('./routes/users');
-const cardsRouter = require('./routes/cards');
-
-app.use((req, res, next) => {
-  req.user = {
-    _id: '648832e84166c7f8c6a08f6d',
-  };
-  next();
-});
-
 app.use(express.json());
-app.use('/cards', cardsRouter);
-app.use('/users', usersRouter);
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
   res.send('Тест');
@@ -49,6 +38,16 @@ app.use((err, req, res) => {
         ? 'На сервере произошла ошибка'
         : message,
     });
+});
+
+app.use('/cards', require('./routes/cards'));
+app.use('/users', require('./routes/users'));
+
+app.use((req, res, next) => {
+  req.user = {
+    _id: '648832e84166c7f8c6a08f6d',
+  };
+  next();
 });
 
 app.listen(PORT, () => {

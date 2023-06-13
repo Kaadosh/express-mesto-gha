@@ -3,9 +3,9 @@ const Card = require('../models/card');
 
 const OK_CODE = 200;
 const CREATED_CODE = 201;
-const ERROR_CODE_NOT_FOUND = 404;
 const BAD_REQUEST_CODE = 400;
-const ERROR_CODE_SERVER_ERROR = 500;
+const NOT_FOUND_CODE = 404;
+const INTERNAL_SERVER_ERROR_CODE = 500;
 
 const getCards = (req, res) => {
   Card.find({})
@@ -13,7 +13,7 @@ const getCards = (req, res) => {
       res.status(OK_CODE).send(cards);
     })
     .catch(() => {
-      res.status(ERROR_CODE_SERVER_ERROR).send({ message: 'Ошибка сервера' });
+      res.status(INTERNAL_SERVER_ERROR_CODE).send({ message: 'Ошибка сервера' });
     });
 };
 
@@ -28,7 +28,7 @@ const createCard = (req, res) => {
       if (err instanceof mongoose.Error.ValidationError) {
         res.status(BAD_REQUEST_CODE).send({ message: 'Переданы некорректные данные' });
       } else {
-        res.status(ERROR_CODE_SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
+        res.status(INTERNAL_SERVER_ERROR_CODE).send({ message: 'На сервере произошла ошибка' });
       }
     });
 };
@@ -39,7 +39,7 @@ const deleteCard = (req, res) => {
   Card.findByIdAndRemove(cardId)
     .then((card) => {
       if (!card) {
-        res.status(ERROR_CODE_NOT_FOUND).send({ message: 'Карточка не найдена' });
+        res.status(NOT_FOUND_CODE).send({ message: 'Карточка не найдена' });
       } else {
         res.status(OK_CODE).send(card);
       }
@@ -48,7 +48,7 @@ const deleteCard = (req, res) => {
       if (err instanceof mongoose.Error.CastError) {
         res.status(BAD_REQUEST_CODE).send({ message: 'Переданы некорректные данные' });
       } else {
-        res.status(ERROR_CODE_SERVER_ERROR).send({ message: 'Карточка не найдена' });
+        res.status(INTERNAL_SERVER_ERROR_CODE).send({ message: 'Карточка не найдена' });
       }
     });
 };
@@ -61,7 +61,7 @@ const likeCard = (req, res) => {
   )
     .then((card) => {
       if (!card) {
-        res.status(ERROR_CODE_NOT_FOUND).send({ message: 'Карточка не найдена' });
+        res.status(NOT_FOUND_CODE).send({ message: 'Карточка не найдена' });
       } else {
         res.status(OK_CODE).send(card);
       }
@@ -70,7 +70,7 @@ const likeCard = (req, res) => {
       if (err instanceof mongoose.Error.CastError) {
         res.status(BAD_REQUEST_CODE).send({ message: 'Переданы некорректные данные' });
       } else {
-        res.status(ERROR_CODE_SERVER_ERROR).send({ message: 'Ошибка сервера' });
+        res.status(INTERNAL_SERVER_ERROR_CODE).send({ message: 'Ошибка сервера' });
       }
     });
 };
@@ -83,7 +83,7 @@ const dislikeCard = (req, res) => {
   )
     .then((card) => {
       if (!card) {
-        res.status(ERROR_CODE_NOT_FOUND).send({ message: 'Карточка не найдена' });
+        res.status(NOT_FOUND_CODE).send({ message: 'Карточка не найдена' });
       } else {
         res.status(OK_CODE).send(card);
       }
@@ -92,7 +92,7 @@ const dislikeCard = (req, res) => {
       if (err instanceof mongoose.Error.CastError) {
         res.status(BAD_REQUEST_CODE).send({ message: 'Переданы некорректные данные' });
       } else {
-        res.status(ERROR_CODE_SERVER_ERROR).send({ message: 'Ошибка сервера' });
+        res.status(INTERNAL_SERVER_ERROR_CODE).send({ message: 'Ошибка сервера' });
       }
     });
 };
