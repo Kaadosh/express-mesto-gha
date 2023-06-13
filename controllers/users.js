@@ -59,14 +59,14 @@ const updateProfile = (req, res) => {
     { new: true, runValidators: true },
   )
     .then((user) => {
-      if (!user) {
-        res.status(ERROR_CODE_NOT_FOUND).send({ message: 'Пользователь не найден' });
-      } else {
-        res.send(user);
-      }
+      res.status(OK_CODE).send(user);
     })
-    .catch(() => {
-      res.status(ERROR_CODE_SERVER_ERROR).send({ message: 'Ошибка сервера' });
+    .catch((err) => {
+      if (err instanceof mongoose.Error.ValidationError) {
+        res.status(BAD_REQUEST_CODE).send({ message: ' Переданы некорректные данные' });
+      } else {
+        res.status(ERROR_CODE_SERVER_ERROR).send({ message: 'Ошибка сервера' });
+      }
     });
 };
 
@@ -80,14 +80,14 @@ const updateAvatar = (req, res) => {
     { new: true, runValidators: true },
   )
     .then((user) => {
-      if (!user) {
-        res.status(ERROR_CODE_NOT_FOUND).send({ message: 'Пользователь не найден' });
-      } else {
-        res.status(user);
-      }
+      res.status(OK_CODE).send(user);
     })
-    .catch(() => {
-      res.status(ERROR_CODE_SERVER_ERROR).send({ message: 'Ошибка сервера' });
+    .catch((err) => {
+      if (err instanceof mongoose.Error.ValidationError) {
+        res.status(BAD_REQUEST_CODE).send({ message: ' Переданы некорректные данные' });
+      } else {
+        res.status(ERROR_CODE_SERVER_ERROR).send({ message: 'Ошибка сервера' });
+      }
     });
 };
 
