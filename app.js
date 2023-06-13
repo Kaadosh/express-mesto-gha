@@ -4,6 +4,9 @@ const mongoose = require('mongoose');
 const app = express();
 const { PORT = 3000 } = process.env;
 
+const PAGE_NOT_FOUND_ERROR_CODE = 404;
+const INTERNAL_SERVER_ERROR_CODE = 500;
+
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
 })
@@ -32,15 +35,20 @@ app.get('/', (req, res) => {
   res.send('Тест');
 });
 
-app.use((req, res, next) => {
-  const error = new Error('Not Found');
-  error.status = 404;
-  next(error);
+app.use('*', (req, res) => {
+  res.status(PAGE_NOT_FOUND_ERROR_CODE).send({ message: 'Страница не найдена' });
 });
 
-app.use((error, req, res) => {
-  res.status(error.status || 500);
-  res.json({ error: error.message });
+app.use((err, req, res) => {
+  const { statusCode = INTERNAL_SERVER_ERROR_CODE, message } = err;
+  console.error(err);
+  res
+    .status(statusCode)
+    .send({
+      message: statusCode === INTERNAL_SERVER_ERROR_CODE
+        ? 'На сервере произошла ошибка'
+        : message,
+    });
 });
 
 app.listen(PORT, () => {

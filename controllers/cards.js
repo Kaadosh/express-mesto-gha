@@ -54,12 +54,9 @@ const deleteCard = (req, res) => {
 };
 
 const likeCard = (req, res) => {
-  const { cardId } = req.params;
-  const userId = req.user._id;
-
   Card.findByIdAndUpdate(
-    cardId,
-    { $addToSet: { likes: userId } },
+    req.params.cardId,
+    { $addToSet: { likes: req.user._id } },
     { new: true },
   )
     .then((card) => {
@@ -79,12 +76,9 @@ const likeCard = (req, res) => {
 };
 
 const dislikeCard = (req, res) => {
-  const { cardId } = req.params;
-  const userId = req.user._id;
-
   Card.findByIdAndUpdate(
-    cardId,
-    { $pull: { likes: userId } },
+    req.params.cardId,
+    { $pull: { likes: req.user._id } },
     { new: true },
   )
     .then((card) => {
