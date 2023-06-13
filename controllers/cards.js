@@ -22,7 +22,7 @@ const createCard = (req, res) => {
   const owner = req.user._id;
   Card.create({ name, link, owner })
     .then((card) => {
-      res.status(CREATED_CODE).res.send(card);
+      res.status(CREATED_CODE).send(card);
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
