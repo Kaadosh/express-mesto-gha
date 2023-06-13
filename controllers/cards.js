@@ -1,11 +1,11 @@
 const { default: mongoose } = require('mongoose');
 const Card = require('../models/card');
 
-const ERROR_CODE_NOT_FOUND = 404;
-const ERROR_CODE_SERVER_ERROR = 500;
 const OK_CODE = 200;
 const CREATED_CODE = 201;
+const ERROR_CODE_NOT_FOUND = 404;
 const BAD_REQUEST_CODE = 400;
+const ERROR_CODE_SERVER_ERROR = 500;
 
 const getCards = (req, res) => {
   Card.find({})
@@ -41,7 +41,7 @@ const deleteCard = (req, res) => {
       if (!card) {
         res.status(ERROR_CODE_NOT_FOUND).send({ message: 'Карточка не найдена' });
       } else {
-        res.send(card);
+        res.status(OK_CODE).send(card);
       }
     })
     .catch((err) => {
