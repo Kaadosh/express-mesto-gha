@@ -4,6 +4,13 @@ const mongoose = require('mongoose');
 const app = express();
 const { PORT = 3000 } = process.env;
 
+app.use((req, res, next) => {
+  req.user = {
+    _id: '64885db7fea85d16532876be',
+  };
+  next();
+});
+
 const PAGE_NOT_FOUND_ERROR_CODE = 404;
 const INTERNAL_SERVER_ERROR_CODE = 500;
 
@@ -20,15 +27,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '648832e84166c7f8c6a08f6d',
-  };
-  next();
-});
-
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use('/cards', cardsRouter);
 app.use('/users', usersRouter);
 
