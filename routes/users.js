@@ -1,15 +1,12 @@
-const express = require('express');
-const { Router } = require('react-router-dom');
-const { getUsers, getUserById, createUser, updateProfile, updateAvatar } = require('../controllers/users');
+const router = require('express').Router();
+const {
+  getUsers, getUserById, createUser, updateProfile, updateAvatar,
+} = require('../controllers/users');
 
-const usersRouter = express.Router();
+router.get('/', getUsers);
+router.get('/:userId', getUserById);
+router.post('/', createUser);
+router.patch('/me', updateProfile);
+router.patch('/me/avatar', updateAvatar);
 
-usersRouter.get('/', getUsers);
-usersRouter.get('/:userId', getUserById);
-usersRouter.post('/', createUser);
-usersRouter.patch('/users/me', updateProfile);
-usersRouter.patch('/users/me/avatar', updateAvatar);
-
-
-
-module.exports = usersRouter;
+module.exports = router;
