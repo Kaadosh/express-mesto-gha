@@ -22,7 +22,7 @@ const cardsRouter = require('./routes/cards');
 
 app.use((req, res, next) => {
   req.user = {
-    _id: '6481bf5c3174c59776f8c2fe',
+    _id: '648832e84166c7f8c6a08f6d',
   };
   next();
 });
